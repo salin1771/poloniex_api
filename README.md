@@ -67,10 +67,10 @@ Usage
 
 
 1.Run the Python scripts to calculate triangular arbitrage opportunities:
-python calculate_arbitrage.py
+python func_arbitrage.py
 
 2.Use the JavaScript files for additional functionalities and comparisons.
-
+the javascript file contains all the possible pair cycles for the triangular arbitrage.
 
 Acknowledgments
 This project was developed to explore and implement triangular arbitrage strategies in the cryptocurrency market. It covers both centralized and decentralized exchanges, providing a comprehensive understanding of arbitrage opportunities.
