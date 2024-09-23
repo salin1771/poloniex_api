@@ -2,7 +2,7 @@
 python project which looks for crypto arbitrage opportunities by using the poloniex api 
 
 Triangular Arbitrage in Cryptocurrency
-This project focuses on identifying and exploiting triangular arbitrage opportunities in the cryptocurrency market. The project is developed using Python and JavaScript, and it covers both centralized exchanges (CeFi).
+This project focuses on identifying and exploiting triangular arbitrage opportunities in the cryptocurrency market. The project is developed using Python and JavaScript, and it covers both centralized exchanges (CeFi) and decentralized exchanges (DeFi).
 
 Project Overview
 This project aims to:
