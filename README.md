@@ -18,6 +18,8 @@ Read blockchain price information with Web3 and Ethers.js.
 Work with the Uniswap V3 SDK.
 
 Features
+
+
 Triangular Arbitrage Calculation: Identify and calculate triangular arbitrage opportunities.
 Surface Rate Calculation: Calculate surface rate opportunities across all pairs.
 Real Rate Calculation: Calculate real rates for arbitrage with depth.
@@ -26,6 +28,8 @@ Blockchain Interaction: Read blockchain price information using Web3 and Ethers.
 Uniswap V3 SDK: Work with the Uniswap V3 SDK for DeFi arbitrage.
 
 Technologies Used
+
+
 Python: For implementing the core logic and calculations.
 JavaScript: For additional functionalities and comparisons.
 Poloniex API: For retrieving data from the Poloniex exchange.
@@ -33,21 +37,35 @@ Web3 and Ethers.js: For interacting with the blockchain.
 Uniswap V3 SDK: For working with Uniswap V3.
 
 Getting Started
+
+
 Prerequisites
+
+
 Basic knowledge of cryptocurrencies.
 No prior programming skills or knowledge of arbitrage needed.
 
 Installation
+
+
 1.Clone the repository:
+
+
 git clone https://github.com/salin1771/poloniex_api.git
 
 2. move into the repo
+
+   
 cd poloniex_api
 
 3.Install the required JavaScript packages:
+
+
 npm install
 
 Usage
+
+
 1.Run the Python scripts to calculate triangular arbitrage opportunities:
 python calculate_arbitrage.py
 
