@@ -1,68 +1,53 @@
-import func_arbitrage
+# https://thegraph.com/hosted-service/subgraph/uniswap/uniswap-v3
+import requests
 import json
 import time
-
-# Set Variables
-coin_price_url = "https://poloniex.com/public?command=returnTicker"
-
-"""
-    Step 0: Finding coins which can be traded
-    Exchange: Poloniex
-    https://docs.poloniex.com/#introduction
-"""
-def step_0():
-
-    # Extract list of coins and prices from Exchange
-    coin_json = func_arbitrage.get_coin_tickers(coin_price_url)
-
-    # Loop through each objects and find the tradeable pairs
-    coin_list = func_arbitrage.collect_tradeables(coin_json)
-
-    # Return list of tradeable coins
-    return coin_list
+import func_triangular_arb
 
 
-""" 
-    Step 1: Structuring Triangular Pairs
-    Calculation Only
-"""
-def step_1(coin_list):
+""" RETRIEVE GRAPH QL MID PRICES FOR UNISWAP"""
+def retrieve_uniswap_information():
 
-    # Structure the list of tradeable triangular arbitrage pairs
-    structured_list = func_arbitrage.structure_triangular_pairs(coin_list)
+    query = """
+         {
+              pools (orderBy: totalValueLockedETH, 
+                orderDirection: desc,
+                first:500) 
+                {
+                    id
+                    totalValueLockedETH
+                    token0Price
+                    token1Price
+                    feeTier
+                    token0 {id symbol name decimals}
+                    token1 {id symbol name decimals}
+                }
+        }
+    """
 
-    # Save structured list
-    with open("structured_triangular_pairs.json", "w") as fp:
-        json.dump(structured_list, fp)
+    url = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3"
+    req = requests.post(url, json={'query': query})
+    json_dict = json.loads(req.text)
+    return json_dict
 
-
-""" 
-    Step 2: Calculate Surface Arbitrage Opporunities
-    Exchange: Poloniex
-    https://docs.poloniex.com/#introduction
-"""
-def step_2():
-
-    # Get Structured Pairs
-    with open("structured_triangular_pairs.json") as json_file:
-        structured_pairs = json.load(json_file)
-
-    # Get Latest Surface Prices
-    prices_json = func_arbitrage.get_coin_tickers(coin_price_url)
-
-    # Loop Through and Structure Price Information
-    for t_pair in structured_pairs:
-        time.sleep(0.3)
-        prices_dict = func_arbitrage.get_price_for_t_pair(t_pair, prices_json)
-        surface_arb = func_arbitrage.calc_triangular_arb_surface_rate(t_pair, prices_dict)
-        if len(surface_arb) > 0:
-            real_rate_arb = func_arbitrage.get_depth_from_orderbook(surface_arb)
-            print(real_rate_arb)
-            time.sleep(20)
-
-""" MAIN """
 if __name__ == "__main__":
-    # coin_list = step_0()
-    # structured_pairs = step_1(coin_list)
+
     while True:
-        step_2()
+
+        pairs = retrieve_uniswap_information()["data"]["pools"]
+        structured_pairs = func_triangular_arb.structure_trading_pairs(pairs, limit=500)
+
+        # Get surface rates
+        surface_rates_list = []
+        for t_pair in structured_pairs:
+            surface_rate = func_triangular_arb.calc_triangular_arb_surface_rate(t_pair, min_rate=1.5)
+            if len(surface_rate) > 0:
+                surface_rates_list.append(surface_rate)
+
+        # Save to JSON file
+        if len(surface_rates_list) > 0:
+            with open("uniswap_surface_rates.json", "w") as fp:
+                json.dump(surface_rates_list, fp)
+                print("File saved.")
+
+        time.sleep(60)
