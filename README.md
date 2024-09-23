@@ -39,10 +39,10 @@ No prior programming skills or knowledge of arbitrage needed.
 
 Installation
 1.Clone the repository:
-git clone https://github.com/yourusername/triangular-arbitrage.git
+git clone https://github.com/salin1771/poloniex_api.git
 
 2. move into the repo
-cd triangular-arbitrage
+cd poloniex_api
 
 3.Install the required JavaScript packages:
 npm install
